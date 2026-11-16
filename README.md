@@ -16,7 +16,7 @@ application made for test automation practice.
 | API testing | Typed API client, status + contract + negative checks |
 | UI/API consistency | The UI is checked against the API as the source of truth |
 | Accessibility | axe-core scans against WCAG 2.1 A/AA with a baseline of known issues |
-| CI/CD | GitHub Actions on push, PR and schedule; HTML report published to GitHub Pages |
+| CI/CD | GitHub Actions against a containerized app instance; HTML report published to GitHub Pages |
 | Debuggability | Trace, screenshot and video kept for failed tests |
 
 ## Test coverage
@@ -51,6 +51,7 @@ tests/
   ui/          Browser tests
   api/         API tests (no browser)
   a11y/        Accessibility scans
+docker/        Docker Compose setup used by CI to run the application
 ```
 
 Design decisions:
@@ -99,6 +100,20 @@ The accessibility scans found real defects in the demo application. They are bas
 
 ## CI
 
-`.github/workflows/playwright.yml` type-checks the project, runs the full suite on Chromium and
-uploads the HTML report as an artifact. On `main`, the report is also published to GitHub Pages.
-A scheduled run on weekdays catches changes in the demo site.
+`.github/workflows/playwright.yml` runs on every push and pull request to `main`:
+
+1. Starts its own instance of the application with Docker Compose (`docker/docker-compose.yml`),
+   using the images published by the Toolshop authors, and seeds a fresh database.
+2. Type-checks the project and runs the full suite on Chromium against that instance.
+3. Uploads the HTML report as an artifact and, on `main`, publishes it to GitHub Pages.
+
+Running against a dedicated instance keeps the pipeline deterministic: results do not depend on
+the availability, the bot protection or the shared data of the public demo.
+
+The same instance can be used locally:
+
+```bash
+docker compose -f docker/docker-compose.yml up -d
+docker compose -f docker/docker-compose.yml exec -T laravel-api php artisan migrate:fresh --seed --force
+BASE_URL=http://localhost:4200 API_URL=http://localhost:8091 npm test
+```
