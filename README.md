@@ -4,10 +4,9 @@ End-to-end test automation project built with **Playwright + TypeScript**. It co
 accessibility testing of [Toolshop](https://practicesoftwaretesting.com), a public demo e-commerce
 application made for test automation practice.
 
-<!-- After the first push, replace USER with your GitHub username:
-[![Playwright tests](https://github.com/USER/playwright-qa-portfolio/actions/workflows/playwright.yml/badge.svg)](https://github.com/USER/playwright-qa-portfolio/actions/workflows/playwright.yml)
-Latest HTML report: https://USER.github.io/playwright-qa-portfolio/
--->
+[![Playwright tests](https://github.com/jlgonzalezravanal/playwright-qa-portfolio/actions/workflows/playwright.yml/badge.svg)](https://github.com/jlgonzalezravanal/playwright-qa-portfolio/actions/workflows/playwright.yml)
+
+**[Latest HTML test report](https://jlgonzalezravanal.github.io/playwright-qa-portfolio/)**
 
 ## What it shows
 
